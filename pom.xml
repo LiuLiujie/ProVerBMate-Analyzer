@@ -41,7 +41,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>nl.utwente.proverb.p2rconvertor.ProVerB2RDF</mainClass>
+                            <mainClass>nl.utwente.proverb.r2pconvertor.RDF2ProVerB</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

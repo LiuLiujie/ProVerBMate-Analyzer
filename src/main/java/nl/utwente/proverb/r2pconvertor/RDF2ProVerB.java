@@ -18,7 +18,7 @@ public class RDF2ProVerB {
     public static void main(String[] args) {
         if (args.length == 2){
             modelPath = args[0];
-            toolsPath = args[1];
+            toolsPath = args[1] + "Tools";
         }
 
         var model = loadModelFile();

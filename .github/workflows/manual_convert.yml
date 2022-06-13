@@ -1,0 +1,81 @@
+name: Manual Conversion
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Set Java environment
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: maven
+
+      # Package the jar file
+      - name: package
+        run: |
+          mvn package
+          echo Maven package success
+
+      #Upload
+      - uses: actions/upload-artifact@v3
+        with:
+          name: converter
+          path: target/ProVerBMate-R2PConverter-1.0.jar
+
+  convert:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # Download
+      - uses: actions/download-artifact@v3
+        with:
+          name: converter
+
+      # Set Java environment
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      # Poll the ProverB
+      - name: Pull ProVerB and enriched dataset
+        run: |
+          git clone https://github.com/LiuLiujie/Verification-Tool-Overview.git
+          curl -LJO https://github.com/LiuLiujie/ProVerBMate/releases/download/daily/enriched_ProVerB.owl
+          echo Clone ProVerB success
+
+      # Convert
+      - name: Convert RDF to ProVerB
+        run: |
+          chmod 0755 ProVerBMate-R2PConverter-1.0.jar
+          java -jar ProVerBMate-R2PConverter-1.0.jar enriched_ProVerB.owl Verification-Tool-Overview/
+          echo Conversion success.
+
+      - name: Zip folder
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r Verification-Tool-Overview.zip Verification-Tool-Overview
+
+      # Release
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "manual"
+          prerelease: false
+          title: "${{ steps.date.outputs.date }}"
+          files: |
+            Verification-Tool-Overview
