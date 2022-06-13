@@ -80,3 +80,4 @@ jobs:
           title: "${{ steps.date.outputs.date }}"
           files: |
             Verification-Tool-Overview.zip
+            *.jar
