@@ -78,4 +78,4 @@ jobs:
           prerelease: false
           title: "${{ steps.date.outputs.date }}"
           files: |
-            Verification-Tool-Overview
+            Verification-Tool-Overview.zip
