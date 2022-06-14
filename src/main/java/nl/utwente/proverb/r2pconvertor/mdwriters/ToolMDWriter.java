@@ -2,6 +2,7 @@ package nl.utwente.proverb.r2pconvertor.mdwriters;
 
 
 import nl.utwente.proverb.r2pconvertor.convertors.Tool2Tool;
+import nl.utwente.proverb.r2pconvertor.dto.Article;
 import nl.utwente.proverb.r2pconvertor.dto.Repository;
 
 import java.io.File;
@@ -15,6 +16,8 @@ public class ToolMDWriter {
     private static final String PREFIX = "#### ";
 
     private static final String REPO = PREFIX + "Repository";
+
+    private static final String PAPER = PREFIX + "Related papers";
 
     private final File tool;
 
@@ -48,6 +51,20 @@ public class ToolMDWriter {
         }
     }
 
+    public void convertArticles(List<Article> articles) {
+
+        if (config.isLoadRelatedPapers()){
+            StringBuilder builder = new StringBuilder();
+            builder.append(PAPER).append("\n");
+            builder.append("\n");
+            for (var article : articles){
+                builder.append(convertArticle(article));
+            }
+            builder.append("\n");
+            output.append(builder);
+        }
+    }
+
     private String convertRepository(Repository repository){
         StringBuilder builder = new StringBuilder();
         builder.append("- ").append(MDTemplate.urlWithName(repository.getUrl(), repository.getName())).append("\n");
@@ -59,6 +76,13 @@ public class ToolMDWriter {
                 builder.append(MDTemplate.urlWithName(contributor.getUrl(), contributor.getName())).append(" ");
             }
         }
+        return builder.toString();
+    }
+
+    private String convertArticle(Article article){
+        StringBuilder builder = new StringBuilder();
+        builder.append("- ").append(MDTemplate.urlWithName(article.getDoiURL(), article.getTitle())).append("\n");
+        //TODO: authors
         return builder.toString();
     }
 }

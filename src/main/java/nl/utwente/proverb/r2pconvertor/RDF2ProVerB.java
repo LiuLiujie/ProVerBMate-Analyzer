@@ -28,7 +28,7 @@ public class RDF2ProVerB {
         //var tools = loadDemo();
         for (File tool : tools){
             convertor = new Tool2Tool.Builder(model, tool)
-                    //.loadRelatedPapers(true)
+                    .loadRelatedPapers(true)
                     .loadRepositories(true)
                     .build();
             convertor.convert();

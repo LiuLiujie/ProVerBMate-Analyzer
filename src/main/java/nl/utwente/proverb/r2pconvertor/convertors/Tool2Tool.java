@@ -109,9 +109,10 @@ public class Tool2Tool implements Convertor{
         System.err.println("Converting: "+insName);
         var toolResource = ontologyService.getTool(insName);
         ToolMDWriter writer = new ToolMDWriter(tool, this);
-        convertRepos(toolResource, writer);
 
-        //var papers = ontologyService.getArticles(toolResource);
+        convertRepos(toolResource, writer);
+        convertArticle(toolResource, writer);
+
         writer.write();
         System.err.println("Done");
     }
@@ -119,5 +120,10 @@ public class Tool2Tool implements Convertor{
     private void convertRepos(Resource toolResource, ToolMDWriter writer) {
         var repos = ontologyService.getRepositories(toolResource);
         writer.convertRepositories(repos);
+    }
+
+    private void convertArticle(Resource toolResource, ToolMDWriter writer) {
+        var articles = ontologyService.getArticles(toolResource);
+        writer.convertArticles(articles);
     }
 }
