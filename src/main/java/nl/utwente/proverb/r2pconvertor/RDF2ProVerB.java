@@ -9,7 +9,7 @@ import java.util.List;
 
 public class RDF2ProVerB {
 
-    private static String modelPath = "enriched_ProVerB.owl";
+    private static String modelPath = "enriched_ProVerB_1.4.0.owl";
 
     private static String toolsPath = "Verification-Tool-Overview/Tools";
 

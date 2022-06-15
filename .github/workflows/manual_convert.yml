@@ -51,14 +51,14 @@ jobs:
       - name: Pull ProVerB and enriched dataset
         run: |
           git clone https://github.com/LiuLiujie/Verification-Tool-Overview.git
-          curl -LJO https://github.com/LiuLiujie/ProVerBMate/releases/download/daily/enriched_ProVerB.owl
+          curl -LJO https://github.com/LiuLiujie/ProVerBMate/releases/download/daily/enriched_ProVerB_1.4.0.owl
           echo Clone ProVerB success
 
       # Convert
       - name: Convert RDF to ProVerB
         run: |
-          chmod 0755 ProVerBMate-R2PConverter-1.0.jar
-          java -jar ProVerBMate-R2PConverter-1.0.jar enriched_ProVerB.owl Verification-Tool-Overview/
+          chmod 0755 ProVerBMate-R2PConverter-1.4.0.jar
+          java -jar ProVerBMate-R2PConverter-1.4.0.jar enriched_ProVerB_1.4.0.owl Verification-Tool-Overview/
           echo Conversion success.
 
       - name: Zip folder
