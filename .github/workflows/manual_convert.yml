@@ -29,7 +29,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: converter
-          path: target/ProVerBMate-R2PConverter-1.0.jar
+          path: target/ProVerBMate-R2PConverter-1.4.0.jar
 
   convert:
     needs: build
