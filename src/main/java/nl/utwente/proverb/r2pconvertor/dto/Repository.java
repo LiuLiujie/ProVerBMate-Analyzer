@@ -19,7 +19,7 @@ public class Repository {
 
     private List<Contributor> contributors;
 
-    private Date lastUpdate;
+    private String lastCommitDate;
 
     private String url;
 

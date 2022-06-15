@@ -3,15 +3,13 @@ package nl.utwente.proverb.r2pconvertor.service;
 import nl.utwente.proverb.r2pconvertor.dto.Article;
 import nl.utwente.proverb.r2pconvertor.dto.Repository;
 import nl.utwente.proverb.r2pconvertor.dto.ontology.PROVERB;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.RDF;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class OntologyServiceImpl implements OntologyService{
 
@@ -42,16 +40,13 @@ public class OntologyServiceImpl implements OntologyService{
 
     @Override
     public List<Repository> getRepositories(Resource toolResource) {
-        var nodes = this.getRepositoryNodes(toolResource);
-        var repos = new ArrayList<Repository>(nodes.size());
-        for (var node : nodes){
+        var repositoryNodes = this.getRepositoryNodes(toolResource);
+        var repos = new ArrayList<Repository>(repositoryNodes.size());
+        for (var node : repositoryNodes){
             var dto = new Repository();
-            var name = model.listObjectsOfProperty((Resource) node, PROVERB.P_NAME)
-                    .toList().stream().findFirst();
-            if (name.isPresent()){
-                dto.setName(name.get().asLiteral().getString());
-                dto.setUrl(node.toString());
-            }
+            dto.setUrl(node.toString());
+            this.getSingleProperty(node, PROVERB.P_NAME).ifPresent(dto::setName);
+            this.getSingleProperty(node, PROVERB.P_LAST_COMMIT_DATE).ifPresent(dto::setLastCommitDate);
             repos.add(dto);
         }
         return repos;
@@ -69,19 +64,16 @@ public class OntologyServiceImpl implements OntologyService{
         var articles = new ArrayList<Article>(nodes.size());
         for (var node : nodes){
             var dto = new Article();
-            var name = getNameProperty(node);
-            if (!name.isEmpty()){
-                dto.setTitle(name);
-                dto.setDoiURL(node.toString());
-            }
+            dto.setDoiURL(node.toString());
+            this.getSingleProperty(node, PROVERB.P_NAME).ifPresent(dto::setTitle);
             articles.add(dto);
         }
         return articles;
     }
 
-    public String getNameProperty(RDFNode node){
-        var name = model.listObjectsOfProperty((Resource) node, PROVERB.P_NAME)
+    public Optional<String> getSingleProperty(RDFNode node, Property proverbProperty){
+        var p = model.listObjectsOfProperty((Resource) node, proverbProperty)
                 .toList().stream().findFirst();
-        return name.map(rdfNode -> rdfNode.asLiteral().getString()).orElse("");
+        return p.map(rdfNode -> rdfNode.asLiteral().getString());
     }
 }

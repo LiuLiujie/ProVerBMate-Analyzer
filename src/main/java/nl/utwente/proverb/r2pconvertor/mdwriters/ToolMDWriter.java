@@ -68,8 +68,8 @@ public class ToolMDWriter {
     private String convertRepository(Repository repository){
         StringBuilder builder = new StringBuilder();
         builder.append("- ").append(MDTemplate.urlWithName(repository.getUrl(), repository.getName())).append("\n");
-        if (config.isLoadRepoLastCommitTime() && repository.getLastUpdate() != null){
-            builder.append("  - ").append("List commit date: ").append(repository.getLastUpdate());
+        if (config.isLoadRepoLastCommitTime() && repository.getLastCommitDate() != null){
+            builder.append("  - ").append("Last commit date: ").append(repository.getLastCommitDate());
         }
         if (config.isLoadRepoContributors() && repository.getContributors().isEmpty()){
             for (var contributor : repository.getContributors()){
