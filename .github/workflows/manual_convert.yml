@@ -51,7 +51,7 @@ jobs:
       - name: Pull ProVerB and enriched dataset
         run: |
           git clone https://github.com/LiuLiujie/Verification-Tool-Overview.git
-          curl -LJO https://github.com/LiuLiujie/ProVerBMate/releases/download/daily/enriched_ProVerB_1.4.0.owl
+          curl -LJO https://github.com/LiuLiujie/ProVerBMate/releases/download/manual/enriched_ProVerB_1.4.0.owl
           echo Clone ProVerB success
 
       # Convert
