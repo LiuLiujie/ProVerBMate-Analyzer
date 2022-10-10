@@ -1,4 +1,4 @@
-package nl.utwente.proverb.r2pconvertor.dto.ontology;
+package nl.utwente.proverb.pvbanalyzer.ontology;
 
 import lombok.Getter;
 import org.apache.jena.rdf.model.Model;

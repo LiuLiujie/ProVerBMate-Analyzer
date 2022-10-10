@@ -1,4 +1,4 @@
-package nl.utwente.proverb.r2pconvertor.dto;
+package nl.utwente.proverb.pvbanalyzer.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
